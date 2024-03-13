@@ -21,13 +21,13 @@ export const Profile = () => {
   const { user: currentUser, dispatch } = useContext(AuthContext);
   const username = useParams().username;
 
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await axios.get("/users?username=" + username);
+      const res = await axios.get("http://localhost:3000/users?username=" + username);
       setUser(res.data);
     };
     getUser();
@@ -36,7 +36,7 @@ export const Profile = () => {
 
   useEffect(() => {
     const getPosts = async () => {
-      const res = await axios.get("/posts/profile/" + username);
+      const res = await axios.get("http://localhost:3000/posts/profile/" + username);
       setPosts(res.data);
     };
     getPosts();
@@ -45,12 +45,12 @@ export const Profile = () => {
   const handleClick = async () => {
     try {
       if (followed) {
-        await axios.put("/users/" + user._id + "/unfollow", {
+        await axios.put("http://localhost:3000/users/" + user._id + "/unfollow", {
           userId: currentUser._id,
         });
         dispatch({ type: "UNFOLLOW", payload: user._id });
       } else {
-        await axios.put("/users/" + user._id + "/follow", {
+        await axios.put("http://localhost:3000/users/" + user._id + "/follow", {
           userId: currentUser._id,
         });
         dispatch({ type: "FOLLOW", payload: user._id });
@@ -69,7 +69,7 @@ export const Profile = () => {
 
   const createConversation = async () => {
     try {
-      await axios.post("/conversations", {
+      await axios.post("http://localhost:3000/conversations", {
         senderId: currentUser._id,
         receiverId: user._id,
       });
@@ -85,7 +85,7 @@ export const Profile = () => {
         <div className="profile-head">
           <div className="head-left">
             <Avatar
-              src={user.profilePicture && PF + user.profilePicture}
+              src={user.profilePicture && "http://localhost:3000/images/" + user.profilePicture}
               sx={{ width: 150, height: 150 }}
             />
           </div>
@@ -100,11 +100,11 @@ export const Profile = () => {
                     color={followed ? "error" : "success"}
                     onClick={handleClick}
                   >
-                    {followed ? "Takipten Çıkar" : "Takip Et"}
+                    {followed ? "Unfollow" : "Follow"}
                   </Button>
                 ) : (
                   <Button variant="contained" size="small">
-                    Düzenle
+                    Follow
                   </Button>
                 )}
 

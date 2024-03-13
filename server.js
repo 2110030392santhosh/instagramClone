@@ -5,13 +5,13 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const multer = require("multer");
 const path = require("path");
+const cors = require("cors");
 
 const authRoutes = require("./routes/auth.js");
 const userRoutes = require("./routes/users.js");
 const postRoutes = require("./routes/posts.js");
 const convRoutes = require("./routes/conversation.js");
 const messageRoutes = require("./routes/message.js");
-
 dotenv.config();
 const connect = async () => {
   try {
@@ -26,6 +26,11 @@ const connect = async () => {
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use(express.json());
 app.use(morgan("common"));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -65,7 +70,7 @@ if (process.env.NODE_ENV === "production") {
 }
 // --------------deployment--------------
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 const server = app.listen(port, () => {
   connect();
@@ -76,7 +81,7 @@ const server = app.listen(port, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "https://instagram-clone-bg-yt.herokuapp.com",
+    origin: "http://localhost:3000",
   },
 });
 

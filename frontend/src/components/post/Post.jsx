@@ -5,7 +5,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Link } from "react-router-dom";
 import TimeAgo from "react-timeago";
-import turkishStrings from "react-timeago/lib/language-strings/tr";
+import englishStrings from "react-timeago/lib/language-strings/en";
 import buildFormatter from "react-timeago/lib/formatters/buildFormatter";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
@@ -21,12 +21,11 @@ export const Post = ({ top, bottom, post }) => {
 
   const { user: currentUser } = useContext(AuthContext);
 
-  const formatter = buildFormatter(turkishStrings);
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const formatter = buildFormatter(englishStrings);
 
   useEffect(() => {
     const getUser = async () => {
-      const res = await axios.get("/users?userId=" + post.userId);
+      const res = await axios.get("http://localhost:3000/users?userId=" + post.userId);
       setUser(res.data);
     };
     getUser();
@@ -38,7 +37,7 @@ export const Post = ({ top, bottom, post }) => {
 
   const likeHandler = async () => {
     try {
-      await axios.put("/posts/" + post._id + "/like", {
+      await axios.put("http://localhost:3000/posts/" + post._id + "/like", {
         userId: currentUser._id,
       });
     } catch (err) {
@@ -51,7 +50,7 @@ export const Post = ({ top, bottom, post }) => {
   const deleteHandler = async () => {
     try {
       if (window.confirm("Are you sure?")) {
-        const res = await axios.delete("/posts/" + post._id, {
+        const res = await axios.delete("http://localhost:3000/posts/" + post._id, {
           data: {
             userId: currentUser._id,
           },
@@ -74,7 +73,6 @@ export const Post = ({ top, bottom, post }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   return (
     <div className="post-wrapper">
       {top && (
@@ -82,7 +80,7 @@ export const Post = ({ top, bottom, post }) => {
           <div className="post-header-left">
             <Link to={"/profile/" + user.username}>
               <Avatar
-                src={user.profilePicture && PF + user.profilePicture}
+                src={user.profilePicture && "http://localhost:3000/images/" + user.profilePicture}
                 sx={{ width: 32, height: 32 }}
               />
             </Link>
@@ -105,7 +103,7 @@ export const Post = ({ top, bottom, post }) => {
         </div>
       )}
       <div className="post-image">
-        <img src={post && PF + post.img} alt="Post Img" />
+        <img src={post && "http://localhost:3000/images/" + post.img} alt="Post Img" />
       </div>
       {bottom && (
         <div className="post-bottom">

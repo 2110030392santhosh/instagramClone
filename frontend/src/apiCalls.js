@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 export const loginCall = async (userCredential, dispatch) => {
   dispatch({ type: "LOGIN_START" });
   try {
-    const res = await axios.post("/auth/login", userCredential);
+    const res = await axios.post("http://localhost:3000/auth/login", userCredential);
     toast.success("Login Successful!");
 
     dispatch({ type: "LOGIN_SUCCESS", payload: res.data });

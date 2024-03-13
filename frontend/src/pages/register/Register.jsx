@@ -36,13 +36,13 @@ export const Register = () => {
         data.append("file", profilePicture);
         user.profilePicture = fileName;
         try {
-          await axios.post("/upload", data);
+          await axios.post("http://localhost:3000/upload", data);
         } catch (err) {
           console.log(err);
         }
       }
       try {
-        const res = await axios.post("/auth/register", user);
+        const res = await axios.post("http://localhost:3000/auth/register", user);
         if (res.status === 200) {
           toast.success("Registration succesfull!");
           navigate("/login");

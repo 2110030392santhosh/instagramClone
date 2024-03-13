@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import { Avatar, Box } from "@mui/material";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
@@ -27,11 +26,9 @@ export const Header = ({ handleOpen }) => {
     setOpen(false);
   };
 
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-
   useEffect(() => {
     const getUsersList = async () => {
-      const res = await axios.get("/users/list");
+      const res = await axios.get("http://localhost:3000/users/list");
       setUsers(res.data);
     };
     getUsersList();
@@ -39,11 +36,9 @@ export const Header = ({ handleOpen }) => {
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
-    setUserFilter(
-      users.filter((user) => user.username.includes(e.target.value))
-    );
+    console.log(users);
+    setUserFilter(users.filter((user) => user.username === e.target.value));
   };
-
   return (
     <div className="header-wrapper">
       <div className="container">
@@ -72,7 +67,9 @@ export const Header = ({ handleOpen }) => {
                           >
                             <Avatar
                               src={
-                                user.profilePicture && PF + user.profilePicture
+                                user.profilePicture &&
+                                "http://localhost:3000/images/" +
+                                  user.profilePicture
                               }
                               sx={{ width: 28, height: 28 }}
                             />
@@ -92,8 +89,8 @@ export const Header = ({ handleOpen }) => {
                       ) : (
                         <div className="search-resul-text">
                           {search.length > 0
-                            ? "Aradığın kullanıcı bulunamadı."
-                            : "Kullanıcı Ara"}
+                            ? "User not found."
+                            : "User Search"}
                         </div>
                       )}
                     </div>
@@ -106,18 +103,18 @@ export const Header = ({ handleOpen }) => {
             <Link to="/">
               <HomeOutlinedIcon className="icon" />
             </Link>
-            <Link to="/messenger">
-              <ChatOutlinedIcon className="icon" />
-            </Link>
             <AddBoxOutlinedIcon
-              className="icon" 
+              className="icon"
               style={{ cursor: "pointer" }}
               onClick={handleOpen}
             />
             <Link to={"/profile/" + user.username}>
               <Avatar
                 alt="Remy Sharp"
-                src={user.profilePicture && PF + user.profilePicture}
+                src={
+                  user.profilePicture &&
+                  "http://localhost:3000/images/" + user.profilePicture
+                }
                 sx={{ width: 28, height: 28 }}
               />
             </Link>

@@ -19,7 +19,7 @@ export const Share = ({ open, handleClose }) => {
   const { user } = useContext(AuthContext);
   const desc = useRef();
 
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -34,14 +34,14 @@ export const Share = ({ open, handleClose }) => {
       data.append("file", file);
       newPost.img = fileName;
       try {
-        await axios.post("/upload", data);
+        await axios.post("http://localhost:3000/upload", data);
       } catch (err) {
         console.log(err);
       }
     }
 
     try {
-      const res = await axios.post("/posts/", newPost);
+      const res = await axios.post("http://localhost:3000/posts/", newPost);
       if (res.status === 200) {
         toast.success(res.data);
         window.location.reload();
@@ -62,7 +62,7 @@ export const Share = ({ open, handleClose }) => {
             <div className="modal-body-top">
               <Avatar
                 alt="Remy Sharp"
-                src={user && PF + user.profilePicture}
+                src={user && "http://localhost:3000/images/" + user.profilePicture}
                 sx={{ width: 46, height: 46 }}
               />
               <input

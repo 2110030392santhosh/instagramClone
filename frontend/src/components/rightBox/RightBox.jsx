@@ -14,7 +14,9 @@ export const RightBox = () => {
   useEffect(() => {
     const getFriends = async () => {
       try {
-        const res = await axios.get("/users/friends/" + user._id);
+        const res = await axios.get(
+          "http://localhost:3000/users/friends/" + user._id
+        );
         setFriends(res.data);
       } catch (err) {
         console.log(err);
@@ -23,13 +25,15 @@ export const RightBox = () => {
     getFriends();
   }, [user._id]);
 
-  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   return (
     <div className="right-box">
       <div className="account">
         <Link to={"/profile/" + user.username}>
           <Avatar
-            src={user.profilePicture && PF + user.profilePicture}
+            src={
+              user.profilePicture &&
+              "http://localhost:3000/images/" + user.profilePicture
+            }
             sx={{ width: 56, height: 56 }}
           />
         </Link>
@@ -46,7 +50,10 @@ export const RightBox = () => {
               <div className="friend-item-left">
                 <Link to={"/profile/" + friend.username}>
                   <Avatar
-                    src={friend.profilePicture && PF + friend.profilePicture}
+                    src={
+                      friend.profilePicture &&
+                      "http://localhost:3000/images/" + friend.profilePicture
+                    }
                     sx={{ width: 40, height: 40 }}
                   />
                 </Link>
@@ -65,7 +72,7 @@ export const RightBox = () => {
                   endIcon={<ArrowCircleRightOutlinedIcon />}
                   size="small"
                 >
-                  Profile Git
+                  Go to Profile
                 </Button>
               </div>
             </li>
